@@ -32,7 +32,7 @@ pipeline {
       steps {
         sshagent(credentials: ['ssh-demo']) {
           sh '''
-            set -euo pipefail
+            set -eu pipefail
             echo "[INFO] Copiando archivos al servidor remoto..."
             scp -P ${SSH_PORT} -o StrictHostKeyChecking=no -r . ${SSH_REMOTE_USER}@${SSH_HOST}:/config/src
 
