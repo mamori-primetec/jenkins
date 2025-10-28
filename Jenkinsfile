@@ -3,9 +3,9 @@ pipeline {
   options { timestamps(); disableConcurrentBuilds() }
   triggers { githubPush() }  // usa Webhook (ver paso 4)
   environment {
-    SSH_HOST = 'localhost'
+    SSH_HOST = '127.0.0.1'
     SSH_PORT = '2222'
-    SSH_USER = 'root' // demo
+    SSH_USER = 'abc' // demo
   }
   stages {
     stage('Checkout') { steps { checkout scm } }
