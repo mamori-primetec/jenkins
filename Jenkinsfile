@@ -1,18 +1,15 @@
 pipeline {
   agent any
   options { timestamps(); disableConcurrentBuilds() }
-  // Para salir del paso sin webhook, podés usar Poll SCM 1/min. Para “instantáneo”, configurá el webhook y cambiá a githubPush().
-  triggers { pollSCM('* * * * *') }
+  triggers { githubPush() }  // usa Webhook (ver paso 4)
   environment {
-    SSH_HOST = 'zb6.nucleus.ar'   // IP del host donde corren los containers
+    SSH_HOST = 'localhost'
     SSH_PORT = '2222'
-    SSH_USER = 'root'
+    SSH_USER = 'root' // demo
   }
   stages {
-    stage('Checkout') {
-      steps { checkout scm }
-    }
-    stage('Marcas de build') {
+    stage('Checkout') { steps { checkout scm } }
+    stage('Stamp') {
       steps {
         sh '''
           COMMIT=$(git rev-parse --short HEAD)
@@ -22,15 +19,11 @@ pipeline {
         '''
       }
     }
-    stage('Deploy via SSH (demo)') {
+    stage('Deploy via SSH') {
       steps {
-        // Usamos scp/ssh con password para la demo rápida.
-        // El contenedor de Jenkins suele traer ssh/scp. Si no, decime y te paso variante con credenciales SSH del plugin.
         sh '''
           set -euo pipefail
-          # Subimos los archivos al "remoto"
           scp -P ${SSH_PORT} -o StrictHostKeyChecking=no -r . ${SSH_USER}@${SSH_HOST}:/root/src
-          # Ejecutamos el script de deploy que mueve /root/src -> /var/www/html
           ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} '/root/deploy.sh'
         '''
       }
@@ -38,8 +31,7 @@ pipeline {
   }
   post {
     success {
-      echo 'Abrí: http://zb6.nucleus.ar:8081  (verás commit y hora).'
-      echo 'También: http://zb6.nucleus.ar:8081/last_deploy.txt'
+      echo 'Abrí http://localhost:8081/ y /last_deploy.txt'
     }
   }
 }
