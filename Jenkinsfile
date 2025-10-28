@@ -10,7 +10,7 @@ pipeline {
     // Si estás en Linux, probá primero con 172.17.0.1 (gateway del bridge):
     SSH_HOST = '172.17.0.1'  // cámbialo a 172.17.0.1 si hace falta
     SSH_PORT = '2222'
-    SSH_USER = 'abc'                   // linuxserver/openssh-server
+    SSH_USER = 'linuxserver.io'                   // linuxserver/openssh-server
   }
 
   stages {
