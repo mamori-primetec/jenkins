@@ -22,7 +22,7 @@ pipeline {
     stage('Deploy via SSH') {
       steps {
         sh '''
-          set -euo pipefail
+          set -eu pipefail
           scp -P ${SSH_PORT} -o StrictHostKeyChecking=no -r . ${SSH_USER}@${SSH_HOST}:/root/src
           ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} '/root/deploy.sh'
         '''
