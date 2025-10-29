@@ -3,11 +3,7 @@ pipeline {
   options { timestamps(); disableConcurrentBuilds() }
   triggers { githubPush() }  // activa el pipeline en cada push
 
-  environment {
-    SSH_HOST = '172.17.0.1'          // gateway del bridge Docker
-    SSH_PORT = '2222'
-    SSH_REMOTE_USER = 'linuxserver.io'  // usuario real del contenedor SSH
-  }
+
 
   stages {
     stage('Checkout') {
