@@ -30,7 +30,7 @@ pipeline {
           string(credentialsId: 'SSH_HOST', variable: 'SSH_HOST'),
           string(credentialsId: 'SSH_PORT', variable: 'SSH_PORT'),
           string(credentialsId: 'SSH_REMOTE_USER', variable: 'SSH_REMOTE_USER')
-        ])
+        ]){
         sshagent(credentials: ['ssh-demo']) {
           sh '''
             set -eu pipefail
@@ -40,6 +40,7 @@ pipeline {
             echo "[INFO] Ejecutando script de deploy remoto..."
             ssh -p ${SSH_PORT} -o StrictHostKeyChecking=no ${SSH_REMOTE_USER}@${SSH_HOST} '/config/deploy.sh'
           '''
+        }
         }
       }
     }
