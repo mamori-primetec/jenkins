@@ -3,8 +3,6 @@ pipeline {
   options { timestamps(); disableConcurrentBuilds() }
   triggers { githubPush() }  // activa el pipeline en cada push
 
-
-
   stages {
     stage('Checkout') {
       steps {
